@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row gy-4">
+  <div class="col-lg-5">
+    <div class="card card-hero p-4">
+      <h4 class="mb-3">Create new item</h4>
+      <form method="post" action="/create">
+        <div class="mb-3">
+          <label class="field-label">Title</label>
+          <input name="title" required class="form-control" placeholder="A short title">
+        </div>
+        <div class="mb-3">
+          <label class="field-label">Description</label>
+          <textarea name="description" class="form-control" rows="4" placeholder="Optional description"></textarea>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary">Create</button>
+          <a href="/" class="btn btn-outline-secondary">Reset</a>
+        </div>
+        <p class="mt-3 small-note">ID will be generated automatically. Primary key: <code>id</code>.</p>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Items</h4>
+      <form method="get" class="d-flex" style="max-width:360px;">
+        <input name="q" value="{{ q }}" class="form-control form-control-sm me-2" placeholder="search title...">
+        <button class="btn btn-sm btn-outline-primary">Search</button>
+      </form>
+    </div>
+
+    {% if items %}
+    <div class="row g-3">
+      {% for it in items %}
+        <div class="col-md-6">
+          <div class="card p-3 h-100">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h5 class="mb-1">{{ it.title }}</h5>
+                <div class="muted">ID: <code>{{ it.id }}</code></div>
+              </div>
+              <div class="text-end">
+                <a class="btn btn-sm btn-outline-secondary" href="/edit/{{ it.id }}">Edit</a>
+                <form method="post" action="/delete/{{ it.id }}" style="display:inline-block;" onsubmit="return confirm('Delete this item?');">
+                  <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+              </div>
+            </div>
+            <p class="mt-3">{{ it.description or '<span class=\"muted\">No description</span>' | safe }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="card p-4 text-center muted">No items yet. Create one — it will appear here.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
