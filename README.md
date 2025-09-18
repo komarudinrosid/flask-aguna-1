@@ -5,7 +5,16 @@ Project ini digunakan untuk pembelajaran TKJ SMKN 1 Nglegok
 - Buat dynamodb table dengan primary key: `id` dengan type `string`
 
 ## Jalankan Aplikasi
-- Install dependensi: `pip install -r requirements.txt`
+- clone project & install dependensi:
+```
+apt update
+apt install git python3-pip python3-virtualenv
+git clone https://github.com/komarudinrosid/flask-aguna-1.git
+cd flask-aguna-1
+virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 - Buat file .env di root project, isi contoh:
 ```
 DDB_TABLE=MyTable
@@ -26,13 +35,13 @@ After=network.target
 
 [Service]
 User=ubuntu
-WorkingDirectory=/home/ubuntu/flaskapp
-ExecStart=/usr/bin/python3 /home/ubuntu/flaskapp/app.py
+WorkingDirectory=/home/ubuntu/flask-aguna-1
+ExecStart=/home/ubuntu/flask-aguna-1/venv/bin/python /home/ubuntu/flask-aguna-1/app.py
 Restart=always
 
 # ini penting supaya .env kebaca
 Environment="PYTHONUNBUFFERED=1"
-EnvironmentFile=/home/ubuntu/flaskapp/.env
+EnvironmentFile=/home/ubuntu/flask-aguna-1/.env
 
 [Install]
 WantedBy=multi-user.target
