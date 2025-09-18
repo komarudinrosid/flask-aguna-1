@@ -133,4 +133,4 @@ def health():
 
 if __name__ == '__main__':
     # Run dev server on 0.0.0.0:5000
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5001)), debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)
