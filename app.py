@@ -12,8 +12,9 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET", str(uuid.uuid4()))
 
 # Environment variables (required)
-DDB_TABLE = os.environ.get("DDB_TABLE") or os.environ.get("DDB_TABLE_NAME")
-AWS_REGION = os.environ.get("AWS_REGION", "ap-southeast-1")
+DDB_TABLE = os.environ.get("DDB_TABLE")
+SERVER_ID = os.environ.get("SERVER_ID")
+AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
 # boto3 client / resource initialization using env creds
 session_kwargs = {}
@@ -61,7 +62,7 @@ def scan_items(filter_q=None, limit=50):
 def index():
     q = request.args.get('q','')
     items = scan_items(filter_q=q) if q else scan_items()
-    return render_template("index.html", items=items, q=q, table_name=DDB_TABLE)
+    return render_template("index.html", items=items, q=q, table_name=SERVER_ID)
 
 @app.route('/create', methods=['POST'])
 def create():
@@ -94,7 +95,7 @@ def edit(id):
         flash('Failed to fetch item', 'danger')
         return redirect(url_for('index'))
 
-    return render_template("edit.html", item=item, table_name=DDB_TABLE)
+    return render_template("edit.html", item=item, table_name=SERVER_ID)
 
 @app.route('/update/<id>', methods=['POST'])
 def update(id):
